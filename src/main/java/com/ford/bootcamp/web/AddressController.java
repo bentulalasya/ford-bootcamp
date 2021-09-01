@@ -26,8 +26,4 @@ public class AddressController {
     public Address saveAddress(@RequestBody Address address) {
         return addressService.saveAddress(address);
     }
-
-    public String convertToUpperCase(String name){
-        return name.toUpperCase();
-    }
 }

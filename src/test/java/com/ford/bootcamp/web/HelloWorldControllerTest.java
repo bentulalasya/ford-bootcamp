@@ -18,14 +18,13 @@ public class HelloWorldControllerTest {
     }
 
     @Test
-    public void printTest() {
-
+    void printTest() {
         String actualOutput = helloWorldController.print();
         assertEquals("Hello World", actualOutput);
     }
 
     @Test
-    public void printNotEqualsTest() {
+    void printNotEqualsTest() {
         String actualOutput = helloWorldController.print();
         assertNotEquals("hi world", actualOutput);
     }

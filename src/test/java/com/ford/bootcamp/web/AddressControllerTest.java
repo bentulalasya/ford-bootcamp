@@ -1,44 +1,47 @@
 package com.ford.bootcamp.web;
 
 import com.ford.bootcamp.model.Address;
+import com.ford.bootcamp.model.AddressTest;
 import com.ford.bootcamp.service.AddressService;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(SpringExtension.class)
 public class AddressControllerTest {
 
-    private  AddressService addressService;
-    private AddressController addressController  = new AddressController(addressService);
+    @Mock
+    private AddressService addressService;
+
+    @InjectMocks
+    private AddressController addressController;
+
 
     @Test
-    public  void findAllTest(){
-        String expectedOutput = "LASYABENTULA";
-        String actualOutput = addressController.convertToUpperCase("LasyaBentula");
-        assertEquals(actualOutput, expectedOutput);
-
+    void findAllTest() {
+        List<Address> addresses = new ArrayList<>();
+        addresses.add(new Address("Arezzo Dr", 78665L, "Round Rock", "TX"));
+        when(addressService.retrieveAddress()).thenReturn(addresses);
+        List<Address> actualOutput = addressController.findAll();
+        assertEquals(actualOutput, addresses);
     }
 
     @Test
-    public void givenEmployees_whenGetEmployees_thenStatus200()
-            throws Exception {
-/*
-        createTestEmployee("bob");
-
-        mvc.perform(get("/api/employees")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", is("bob")));
-
- */
+    void saveTest() {
+        Address inputAddress = new Address("Arezzo Dr", 78665L, "Round Rock", "TX");
+        Address expectedAddress = new Address("Arezzo Dr", 78665L, "Round Rock", "TX");
+        expectedAddress.setId(1);
+        when(addressService.saveAddress(inputAddress)).thenReturn(expectedAddress);
+        Address actualOutput = addressController.saveAddress(inputAddress);
+        assertEquals(actualOutput, expectedAddress);
     }
 }
